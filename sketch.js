@@ -1,13 +1,12 @@
 const Engine = Matter.Engine;
 const World= Matter.World;
 const Bodies = Matter.Bodies;
-const Constraint = Matter.Constraint
+const Constraint = Matter.Constraint;
 
 var engine, world;
 var box1, pig1;
 var backgroundImg,platform;
-var log6;
-var chain;
+var bird, slingShot;
 
 function preload() {
     backgroundImg = loadImage("sprites/bg.png");
@@ -36,23 +35,20 @@ function setup(){
     box5 = new Box(810,160,70,70);
     log4 = new Log(760,120,150, PI/7);
     log5 = new Log(870,120,150, -PI/7);
-
-    log6 = new Log(100,200,20,PI/2)
+    
 
     bird = new Bird(100,100);
-    chain = new Slingshot(bird.body,log6.body);
 
+    
+    chain = new Chain(bird.body,{x:200,y:100});
 }
 
 function draw(){
     background(backgroundImg);
     Engine.update(engine);
-    console.log(box2.body.position.x);
-    console.log(box2.body.position.y);
-    console.log(box2.body.angle);
+    strokeWeight(4);
     box1.display();
     box2.display();
-    fill("brown")
     ground.display();
     pig1.display();
     log1.display();
@@ -65,11 +61,14 @@ function draw(){
     box5.display();
     log4.display();
     log5.display();
-    log6.display();
-    chain.display();
 
     bird.display();
-    fill("purple");
     platform.display();
-
+    chain.display();    
+}
+function mouseDragged(){
+    Matter.Body.setPosition(bird.body,{x:mouseX,y:mouseY})
+}
+function mouseReleased(){
+    chain.fly();
 }
